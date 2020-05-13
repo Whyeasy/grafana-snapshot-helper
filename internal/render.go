@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+//Render is the HTTP Server that forwards the message to Grafana to create a snapshot. It returns the response that Grafana provides.
 func Render(key string) {
 
 	previewHandler := func(w http.ResponseWriter, req *http.Request) {
@@ -18,6 +19,11 @@ func Render(key string) {
 		}
 
 		req2, err := http.NewRequest("POST", "http://localhost:3000/api/snapshots", bytes.NewBuffer(r))
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
 		req2.Header.Add("Authorization", "Bearer "+key)
 		req2.Header.Set("Accept", "application/json")
 		req2.Header.Add("Content-type", "application/json")
@@ -31,6 +37,7 @@ func Render(key string) {
 		defer resp.Body.Close()
 
 		r, err = ioutil.ReadAll(resp.Body)
+
 		if err != nil {
 			fmt.Println(err)
 		}

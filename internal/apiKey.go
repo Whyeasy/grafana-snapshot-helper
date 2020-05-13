@@ -20,6 +20,7 @@ type apiRequest struct {
 	Role string
 }
 
+//GetAPIKey retrieves a API key in Grafana
 func GetAPIKey(c Config) (string, error) {
 
 	reqBody, err := json.Marshal(apiRequest{

@@ -3,7 +3,7 @@ before:
   hooks:
     - go mod download
 builds:
-  - main: "./cmd/grafana-snapshot-helper.go"
+  - main: "./cmd/grafana-snapshot-helper/main.go"
     binary: "{{ .ProjectName }}"
     env:
       - CGO_ENABLED=0
