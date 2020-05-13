@@ -3,8 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
-	"grafana-snapshot-helper/internal"
 	"os"
+
+	"github.com/Whyeasy/grafana-snapshot-helper/internal"
 )
 
 var config internal.Config

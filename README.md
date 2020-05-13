@@ -1,4 +1,6 @@
-![build](https://github.com/Whyeasy/grafana-snapshot-helper/workflows/build/badge.svg) ![status-badge](https://goreportcard.com/badge/github.com/Whyeasy/grafana-snapshot-helper)
+![build](https://github.com/Whyeasy/grafana-snapshot-helper/workflows/build/badge.svg)
+![status-badge](https://goreportcard.com/badge/github.com/Whyeasy/grafana-snapshot-helper)
+![Github go.mod Go version](https://img.shields.io/github/go-mod/go-version/Whyeasy/grafana-snapshot-helper)
 
 # Grafana snapshot Helper
 

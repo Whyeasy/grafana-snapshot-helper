@@ -6,7 +6,9 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"net/http"
+	"time"
 )
 
 type apiResponse struct {
@@ -31,11 +33,36 @@ func GetAPIKey(c Config) (string, error) {
 		return "", err
 	}
 
-	resp, err := http.Post("http://"+c.Username+":"+c.Password+"@localhost:3000/api/auth/keys", "application/json", bytes.NewBuffer(reqBody))
+	req, err := http.NewRequest(
+		"POST",
+		"http://"+c.Username+":"+c.Password+"@localhost:3000/api/auth/keys",
+		bytes.NewBuffer(reqBody),
+	)
+	if err != nil {
+		return "", fmt.Errorf("unable to make request: %s", err)
+	}
+
+	var resp *http.Response
+	err = retry(3, 5*time.Second, func() error {
+		resp, err = http.DefaultClient.Do(req)
+		if err != nil {
+			return err
+		}
+		defer resp.Body.Close()
+
+		s := resp.StatusCode
+		switch {
+		case s >= 500:
+			return fmt.Errorf("server error: %v", s)
+		case s >= 400:
+			return stop{fmt.Errorf("client error: %v", s)}
+		default:
+			return nil
+		}
+	})
 	if err != nil {
 		return "", err
 	}
-	defer resp.Body.Close()
 
 	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -54,4 +81,29 @@ func GetAPIKey(c Config) (string, error) {
 	}
 
 	return "", errors.New("API Key ID already exists")
+}
+
+func retry(attempts int, sleep time.Duration, f func() error) error {
+
+	if err := f(); err != nil {
+		if s, ok := err.(stop); ok {
+			return s.error
+		}
+
+		if attempts--; attempts > 0 {
+			fmt.Println("Retrying to connect, retries:", attempts)
+			jitter := time.Duration(rand.Int63n(int64(sleep)))
+			sleep = sleep + jitter/2
+
+			time.Sleep(sleep)
+			return retry(attempts, 2*sleep, f)
+		}
+		return err
+	}
+
+	return nil
+}
+
+type stop struct {
+	error
 }
