@@ -1,3 +1,5 @@
+![build](https://github.com/Whyeasy/grafana-snapshot-helper/workflows/build/badge.svg) ![status-badge](https://goreportcard.com/badge/github.com/Whyeasy/grafana-snapshot-helper)
+
 # Grafana snapshot Helper
 
 A Grafana sidecar that allows easy usage of the snapshot capability with a stateless Grafana.
