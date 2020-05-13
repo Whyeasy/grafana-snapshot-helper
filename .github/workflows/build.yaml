@@ -9,10 +9,6 @@ on:
     branches:
       - "*"
 jobs:
-  linting:
-    name: Linting
-    runs-on: ubuntu-latest
-    steps:
   build:
     runs-on: ubuntu-latest
     name: build
