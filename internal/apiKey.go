@@ -43,13 +43,13 @@ func GetAPIKey(c Config) (string, error) {
 	}
 
 	var resp *http.Response
-	err = retry(3, time.Second, func() error {
+	err = retry(3, 5*time.Second, func() error {
 		client := &http.Client{Timeout: time.Second * 10}
 		resp, err = client.Do(req)
-		defer resp.Body.Close()
 		if err != nil {
 			return err
 		}
+		defer resp.Body.Close()
 
 		s := resp.StatusCode
 		switch {
