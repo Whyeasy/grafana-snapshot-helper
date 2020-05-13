@@ -9,6 +9,15 @@ on:
     branches:
       - "*"
 jobs:
+  linting:
+    name: Linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Lint
+        uses: actions-contrib/golangci-lint@v1
+        with:
+          args: run -E golint -E bodyclose
   build:
     runs-on: ubuntu-latest
     name: build
@@ -21,10 +30,6 @@ jobs:
         uses: actions/checkout@v1
       - name: Get dependencies
         run: make deps
-      - name: Lint
-        uses: actions-contrib/golangci-lint@v1
-        with:
-          args: run -E golint -E bodyclose
       - name: Build & Test
         run: make build
       - name: Validate release
