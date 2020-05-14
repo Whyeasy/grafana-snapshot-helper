@@ -42,14 +42,18 @@ func GetAPIKey(c Config) (string, error) {
 		return "", fmt.Errorf("unable to make request: %s", err)
 	}
 
-	var resp *http.Response
+	var respBody []byte
 	err = retry(3, 5*time.Second, func() error {
 		client := &http.Client{Timeout: time.Second * 10}
-		resp, err = client.Do(req)
+		resp, err := client.Do(req)
 		if err != nil {
 			return err
 		}
 		defer resp.Body.Close()
+		respBody, err = ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return err
+		}
 
 		s := resp.StatusCode
 		switch {
@@ -61,11 +65,6 @@ func GetAPIKey(c Config) (string, error) {
 			return nil
 		}
 	})
-	if err != nil {
-		return "", err
-	}
-
-	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return "", err
 	}
