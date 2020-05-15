@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Whyeasy/grafana-snapshot-helper/internal"
+	"github.com/whyeasy/grafana-snapshot-helper/internal"
 )
 
 var config internal.Config

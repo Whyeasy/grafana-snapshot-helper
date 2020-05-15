@@ -41,10 +41,12 @@ func GetAPIKey(c Config) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("unable to make request: %s", err)
 	}
+	req.Header.Add("Content-type", "application/json")
 
 	var respBody []byte
 	err = retry(3, 5*time.Second, func() error {
 		client := &http.Client{Timeout: time.Second * 10}
+
 		resp, err := client.Do(req)
 		if err != nil {
 			return err
