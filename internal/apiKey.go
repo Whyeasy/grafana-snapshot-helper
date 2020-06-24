@@ -27,7 +27,7 @@ func GetAPIKey(c Config) (string, error) {
 
 	reqBody, err := json.Marshal(apiRequest{
 		Name: "snapshot",
-		Role: "Admin",
+		Role: "Editor",
 	})
 	if err != nil {
 		return "", err
@@ -82,7 +82,7 @@ func GetAPIKey(c Config) (string, error) {
 		return response.Key, nil
 	}
 
-	return "", errors.New("API Key ID already exists")
+	return "", errors.New("Snapshot ID already exists, please remove snapshot ID from Grafana")
 }
 
 func retry(attempts int, sleep time.Duration, f func() error) error {

@@ -21,6 +21,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     name: build
+    needs: linting
     steps:
       - name: Set up Go 1.14
         uses: actions/setup-go@v1
